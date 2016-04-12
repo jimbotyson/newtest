@@ -1,0 +1,166 @@
+---
+title: "Demonstrating Literate R"
+author: "Jim Tyson"
+date: "4 April 2016"
+bibliography: bibliography.bib
+output:
+  revealjs::revealjs_presentation:
+    theme: sky
+    highlight: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Literate Programming and Reproducible Research
+Reproducibility is the minimum standard for research.  Broman says
+
+_Computational work is reproducible if one can take the data and code and produce the same set of results. Replicable is more stringent: can someone  repeat the experiment and get the same results?_
+ [see @bromantpr]
+
+-------------------------------------
+
+And Peng in his presentation _Make the World a Better Place through Reproducible Research_ speaks of *Reproducible Research: A Minimum Standard* with the following characteristics
+
+  * Published research where the following are made available:
+  * Analytic data
+  * Computer code implementing methods
+  * Documentation about code/data
+
+All are distributed using standard means
+
+[see @rdpengrr]
+
+
+##Literate Programming 
+
+In this context, _literate programming_ [see @knuth_literate_1984] is seen as part of a workflow for _reproducible research_ by allowing a report on the results of research to be disseminated along with the computational code that produced the analysis.
+
+##Some Principles
+
+* Use packrat
+* Data is read only
+* Everything is scripted
+* Be modular
+* Automate with _make_
+* Use version control
+* Disseminate code, data and reports
+
+##Use packrat and always create projects
+
+Always create a project - either manually or using RStudio.  Keep all the files required for your product within the project folder structure.  Use packrat to ensure that your project is truly portable and won't fail if moved to an environment where some packages have not been installed.
+
+## Treat data as read only
+
+Read the raw data and process it by script each time.  You can programmatically create a new datafile if you wish or directly create and work with the processed data as a dataframe.  By leaving the original data in its raw state and by scripting any data cleaning and data preparation, you will never have to worry about losing your data files or worrying which of multiple files contains the correct up to date data.
+
+## Script everything
+
+All R processes should be run from scripts.  This means that you always know exactly what has been done to the data.  You can easily correct errors.  Your audience can see exactly what you did.  You can repeat your data preparation and analysis easily.  If you make a mistake in analysis or preparation and you dirty your data, you can simply re-run your scipts up to that point to recover.
+
+## Be modular
+
+There is no absolute rule about modularity, but as an example, I have separated the data preparation and the production of graphs into separate scripts.  This means that I have quite small code files to deal with and I can run only the code that needs to be run easily.  This becomes much more useful when you _automate your workflow_.
+
+## Automate the workflow
+
+Create a *make* file to specify how your product - usually a report - is to be produced.  The unix __make__ utility specifies _target files_ to be produced, their _dependencies_ and the _recipe_ to create them.  When you execute the _Makefile_ the utility checks timestamps and only runs the files that have changed since the target was last produced.
+
+## Use version control
+
+If you have __git__ installed, it is very easy to place your project under version control.  Here is the basic process for creating a repository using _git_ and _github_.
+
+
+<!-- ##### Set up your project with git and git hub -->
+<!-- 1. set up a git hub account. -->
+<!-- 2. Set global settings for git locally: -->
+<!--   git config --global user.name "Jim Tyson" -->
+<!--   git config --global user.email "j.tyson@ucl.ac.uk" -->
+<!-- 3. create a new repository on git hub -->
+<!-- 4. create a new directory for your project locally (ie on your hard drive) -->
+<!-- 5. go to the new directory and initialise it: -->
+<!--   git init -->
+<!-- 6. create a first file for the project eg a readme.txt file -->
+<!-- 7. tell git that the file you created is part of the repository: -->
+<!--   git add readme.txt -->
+<!-- 8. tell git that you want a snapshot taken of the current repository: -->
+<!--   git commit -m "Added the file readme.txt" -->
+<!--   git commit -a -->
+<!-- 9. link the local repository with the remote github repository -->
+<!--   git remote add origin https://github.com/jimbotyson/myproject.git -->
+<!--   git remote -v #to check what we just did -->
+<!-- 10. push any changes committed to the local repository to the git hub repository -->
+<!--   git push -->
+
+## Make all products available to your audience
+
+Reproducibility is only achieved if you make the code and data accessible to your audience.  Github provides an excellent way to do this.  Create a public repository for the project.
+
+<!-- ## Make, Rstudio and Markdown -->
+
+<!-- This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. -->
+
+<!-- This document combines text R code that may create plots and tables, analyse data, and insert the results in to nicely formatted PDF documents.  This approach is often called _literate programming_. -->
+
+<!-- While in this example we are using _markdown_ as the document production language, but you can equally use LaTeX.  We are outputing a PDF file but you can equally produce HTML and Microsoft Word documents.  To use markdown with RStudio I use the package _knitr_.  To use LaTeX with RStudio, I would use the package _sweave_. -->
+
+<!-- ##The demonstration project -->
+
+<!-- ### The process in this demonstration. -->
+
+<!-- Rstudio is used to write the markdown file containing the R code and to produce the R scripts that are used in the data prepration and alaysis. -->
+
+<!-- Finally, the UNIX make utility is used to automate the process of running any scripts that are required to produce the report and to manage the dependencies between files, ensuring that only scripts that need to be run are run each time. -->
+
+<!-- ##The files in this demonstration# -->
+
+<!-- The main product of this demonstraion is the PDF.  That file is produced from the script *newtesting.Rmd*; that file contains graphs produced by *graphs.R*; *newtesting.PDF* and *graphs.R* depend on a clean data file called *cleandata.csv*; *cleandata.csv* is produced from the raw data which is read from a website and prepped by a script *readandclean.R*. -->
+
+<!-- ## A histogram -->
+
+<!-- ```{r readandplot,  echo=FALSE} -->
+<!-- resdf<-read.csv("cleandata.csv") -->
+
+<!-- hist(resdf$maths) -->
+
+
+<!-- ``` -->
+
+
+<!-- ##  Scatter Plots -->
+
+<!-- You can also embed plots, for example: -->
+
+<!-- ```{r pressure, echo=FALSE} -->
+<!-- plot(resdf$english,resdf$history) -->
+<!-- ``` -->
+
+<!-- Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot. -->
+
+<!-- ##Custome table -->
+
+<!-- | Left align | Right align | Center align | -->
+<!-- |:-----------|------------:|:------------:| -->
+<!-- | This       |        This |     This     | -->
+<!-- | column     |      column |    column    | -->
+<!-- | will       |        will |     will     | -->
+<!-- | be         |          be |      be      | -->
+<!-- | left       |       right |    center    | -->
+<!-- | aligned    |     aligned |   aligned    | -->
+
+
+<!-- ##Regression -->
+
+<!-- In this simple linear regression model, I introduce the r package _xtable_ which extends the functionality of r and allows for the creation of well formatted LaTeX coded tables.  This works because an rmarkdown file and recognise and interpret LaTeX code. -->
+
+<!-- ```{r regress, results='asis'} -->
+<!-- modenghist<-lm(resdf$english~resdf$history) -->
+<!-- library(xtable) -->
+<!-- coeffs<-xtable(summary(modenghist)$coef) -->
+<!-- print(coeffs) -->
+<!-- ``` -->
+
+<!-- \includegraphics[width=200pt]{avg.png} -->
+
+# References
